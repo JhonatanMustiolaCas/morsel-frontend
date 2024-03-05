@@ -1,0 +1,264 @@
+---
+import { Code } from "astro/components";
+
+const requestMorseToText = `
+{
+    "source": {
+        "word1": {
+            "char1": "--.-",
+            "char2": "..-",
+            "char3": "."
+        },
+        "word2": {
+            "char1": "....",
+            "char2": ".-"
+        },
+        "word3": {
+            "char1": "---",
+            "char2": "-...",
+            "char3": ".-.",
+            "char4": ".-",
+            "char5": "-..",
+            "char6": "---"
+        },
+        "word4": {
+            "char1": "-..",
+            "char2": "..",
+            "char3": "---",
+            "char4": "..."
+        }
+    }
+}`;
+
+const responseMorseToText = `
+{
+  "result": {
+    "tokenized": "que ha obrado dios?",
+    "source": {
+      "word1": {
+        "char1": "--.-",
+        "char2": "..-",
+        "char3": "."
+      },
+      "word2": {
+        "char1": "....",
+        "char2": ".-"
+      },
+      "word3": {
+        "char1": "---",
+        "char2": "-...",
+        "char3": ".-.",
+        "char4": ".-",
+        "char5": "-..",
+        "char6": "---"
+      },
+      "word4": {
+        "char1": "-..",
+        "char2": "..",
+        "char3": "---",
+        "char4": "...",
+        "char5": "..--.."
+      }
+    },
+    "normalized_source": null,
+    "untokenized": [],
+    "direction": "from morse to plain text"
+  },
+  "success": true,
+  "message": ""
+}`;
+
+const requestTestToMorse = `
+{
+    "source": "¿Qué ha obrado Dios?"
+}`;
+const testToMorse = `
+{
+  "result": {
+    "tokenized": {
+      "serie1": {
+        "token1": "--.-",
+        "token2": "..-",
+        "token3": "."
+      },
+      "serie2": {
+        "token1": "....",
+        "token2": ".-"
+      },
+      "serie3": {
+        "token1": "---",
+        "token2": "-...",
+        "token3": ".-.",
+        "token4": ".-",
+        "token5": "-..",
+        "token6": "---"
+      },
+      "serie4": {
+        "token1": "-..",
+        "token2": "..",
+        "token3": "---",
+        "token4": "..."
+      }
+    },
+    "source": "¿Qué ha obrado Diós?",
+    "normalized_source": "¿que ha obrado dios?",
+    "untokenized": [
+      "?",
+      "¿"
+    ],
+    "direction": "from plain text to morse"
+  },
+  "success": true,
+  "message": ""
+}`;
+---
+
+<section class="text-white">
+  <h2 class="text-6xl font-bold" id="api">API</h2>
+  <div class="flex flex-col gap-4">
+    <p class="text-lg">
+      url: <span class="bg-green-700 text-black rounded-sm p-1 font-semibold"
+        >https://morsel-api.onrender.com/api</span
+      >
+    </p>
+
+    <div>
+      <span class="text-lg mb-2">Endpoints:</span>
+      <ul class="translate-x-8 list-disc flex flex-col gap-3">
+        <li>
+          <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+            >/convert-to-morse/es</span
+          >: para juegos de caracteres que incluyen ñ u otros caracteres del
+          español soportados en código morse (a-z o A-Z, ñ y 0-9)
+        </li>
+        <li>
+          <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+            >/convert-to-morse/std</span
+          >: para juegos de caracteres soportados en el standard del código
+          morse (a-z o A-Z y 0-9)
+        </li>
+        <li>
+          <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+            >/convert-to-plain-text</span
+          >: puede recibir código morse para cualquier juego de caracteres en
+          texto plano
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <span class="text-lg mb-2">Queries:</span>
+      <ul>
+        <li>
+          <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+            >symbols</span
+          > (opcional): true o false (false por defecto). Para especificar si se
+          quiere convertir símbolos especiales soportados en código morse. Sólo funciona
+          para convertir texto plano a morse. Los caracteres especiales incluídos
+          son: <span class="font-bold bg-green-700 p-1 rounded-sm text-black"
+            >.=,:?'/()"&!;+-$@</span
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="my-4" />
+
+  <div class="flex flex-col md:grid grid-cols-2 grid-rows-1 gap-4">
+    <div class="max-h-[400px] overflow-y-scroll p-2 bg-zinc-700 rounded-lg">
+      <div
+        class="[&_pre]:p-2 [&_pre]:text-sm [&_pre]:rounded-lg [&_pre]:border-2 [&_pre]:border-green-600 text-lg"
+      >
+        <p>
+          <span class="text-black">Method:</span>
+          <b>POST</b>
+        </p>
+        <p>
+          <span class="text-black">Endpoint:</span>
+          <span class="bg-green-700 p-1 text-black">/convert-to-morse/es</span>
+        </p>
+        <p>
+          <span class="text-black">Content-Type:</span>
+          <b>application/json</b>
+        </p>
+
+        <p class="mt-2">Body</p>
+        <Code code={requestTestToMorse} lang="sh" />
+      </div>
+    </div>
+    <div
+      class="[&_pre]:p-2 [&_pre]:text-sm [&_pre]:rounded-lg [&_pre]:max-h-[400px] [&_pre]:overflow-y-scroll"
+    >
+      <Code code={testToMorse} lang="sh" />
+    </div>
+  </div>
+
+  <p class="my-4">
+    Los caracteres con acentos, diacríticos o cualquier otro tipo de tilde
+    excepto la <b>ñ</b> serán normalizados. Caracteres especiales o cualquier otro
+    tipo de caracter no alfanumérico sin traducción a código morse no será tomado
+    en cuenta, y una lista de tales símbolos será devuelta en la propiedad <span
+      class="bg-green-700 text-black font-semibold p-1 rounded-sm"
+      >untokenized</span
+    >
+  </p>
+
+  <hr class="my-4" />
+
+  <div class="flex flex-col md:grid grid-cols-2 grid-rows-1 gap-4">
+    <div class="max-h-[400px] overflow-y-scroll p-2 bg-zinc-700 rounded-lg">
+      <div
+        class="[&_pre]:p-2 [&_pre]:text-sm [&_pre]:rounded-lg [&_pre]:border-2 [&_pre]:border-green-600 text-lg"
+      >
+        <p>
+          <span class="text-black">Method:</span>
+          <b>POST</b>
+        </p>
+        <p>
+          <span class="text-black">Endpoint:</span>
+          <span class="bg-green-700 p-1 text-black"
+            >/convert-to-plain-text/es</span
+          >
+        </p>
+        <p>
+          <span class="text-black">Content-Type:</span>
+          <b>application/json</b>
+        </p>
+
+        <p class="mt-2">Body</p>
+        <Code code={requestMorseToText} lang="sh" />
+      </div>
+    </div>
+    <div
+      class="[&_pre]:p-2 [&_pre]:text-sm [&_pre]:rounded-lg [&_pre]:max-h-[400px] [&_pre]:overflow-y-scroll"
+    >
+      <Code code={responseMorseToText} lang="sh" />
+    </div>
+  </div>
+  <div class="my-4">
+    La representación debe ser un objeto de 3 niveles:<br />
+    <ol class="flex flex-col gap-3 list-decimal">
+      <li>
+        <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+          >source</span
+        >: Obligatorio. Debe tener ese nombre para identificarlo
+      </li>
+      <li>
+        <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+          >word[n]</span
+        >: Obligatorio. Puede tener cualquier nombre. Es la representación de
+        una cadena de 0 o más caracteres. Su valor debe ser otro objeto, de no
+        ser así, no lanzará error pero no lo tomará en cuenta
+      </li>
+      <li>
+        <span class="bg-green-700 p-1 rounded-sm text-black font-semibold"
+          >char[n]</span
+        >: Obligatorio. Puede tener cualquier nombre. Representa a una cadena
+        con el caracter morse a decodificar, por lo su valor debe estar en
+        formato string. De no ser así, no lanzará error pero no lo tomará en
+        cuenta
+      </li>
+    </ol>
+  </div>
+</section>

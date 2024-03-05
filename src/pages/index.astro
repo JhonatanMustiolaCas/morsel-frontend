@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import APIDoc from "../components/APIDoc.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <header
+      class="h-screen w-full flex justify-center items-center flex-col shadow-lg mb-12 bg-zinc-700"
+    >
+      <h1 class="text-6xl font-bold text-green-700">Morsel API</h1>
+      <p class="text-2xl text-white">Convierte Texto Plano a Código Morse</p>
+      <a
+        class="bg-green-700 p-2 rounded-lg text-white font-bold hover:bg-green-800 transition-all mt-4"
+        href="#api">Leer documentación</a
+      >
+    </header>
+
+    <section class="max-w-[80%] mx-auto my-0 text-lg mb-12">
+      <APIDoc />
+    </section>
+
+    <footer
+      class="h-[50px] w-full bg-zinc-700 flex flex-col justify-center items-center text-white text-lg"
+    >
+      Jhonatan Mustiola - 2024
+    </footer>
+  </main>
+</Layout>
